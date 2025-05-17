@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="general.css">
+</head>
+
+<body>
+    <h1>CONTROL DE DEPARTAMENTOS</h1>
+    <div id="info"></div>
+    <!-- CONTENEDOR PRINCIPAL PARA LAS DOS COLUMNAS -->
+    <div class="contenido">
+        <div class="pisos-1">
+            <button class="departamento" data-id="101" data-mensualidad="700" data-inquilino="LAURA  ">
+                <span class="button-content">DEP 101</span>
+            </button>
+            <button class="departamento" data-id="103" data-mensualidad="900" data-inquilino="JULIA">
+                <span class="button-content">DEP 103</span>
+            </button>
+            <button class="departamento" data-id="104" data-mensualidad="850" data-inquilino="HERNAN">
+                <span class="button-content">DEP 104</span>
+            </button>
+            <button class="departamento" data-id="105" data-mensualidad="900" data-inquilino="YOLANDA">
+                <span class="button-content">DEP 105</span>
+            </button>
+            <button class="departamento" data-id="106" data-mensualidad="700" data-inquilino="FREDY">
+                <span class="button-content">DEP 106</span>
+            </button>
+        </div>
+        <div class="pisos-2">
+            <button class="departamento" data-id="202" data-mensualidad="900" data-inquilino="CRISTIAN">
+                <span class="button-content">DEP 202</span>
+            </button>
+            <button class="departamento" data-id="203" data-mensualidad="800" data-inquilino="VANESA">
+                <span class="button-content">DEP 203</span>
+            </button>
+            <button class="departamento" data-id="204" data-mensualidad="900" data-inquilino="EDGAR">
+                <span class="button-content">DEP 204</span>
+            </button>
+            <button class="departamento" data-id="205" data-mensualidad="850" data-inquilino="JAVIER">
+                <span class="button-content">DEP 205</span>
+            </button>
+            <button class="departamento" data-id="206" data-mensualidad="800" data-inquilino="ANTHONY">
+                <span class="button-content">CASA</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="info-departamento"></div>
+    <!-- El script debe ir aquí -->
+    <script>
+document.querySelectorAll('.departamento').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const depId = this.getAttribute('data-id');
+    const mensualidad = this.getAttribute('data-mensualidad');
+    const inquilino = encodeURIComponent(this.getAttribute('data-inquilino'));
+    // Redirige a departamento.html con los datos en la URL
+    window.location.href = `departamento.html?depId=${depId}&mensualidad=${mensualidad}&inquilino=${inquilino}`;
+  });
+});
+</script>
+</body>
+
+</html>

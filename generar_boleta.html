@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generar Boleta</title>
+    <link rel="stylesheet" href="departamento.css">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        .formulario-boleta {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            padding: 32px 36px 36px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .formulario-boleta label {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .formulario-boleta input, .formulario-boleta textarea {
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #bbb;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        .formulario-boleta input[type="date"] {
+            padding: 6px 10px;
+        }
+        .formulario-boleta button {
+            margin-top: 10px;
+            padding: 12px 32px;
+            background: #00e21a;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .formulario-boleta button:hover {
+            background: #00c914;
+        }
+        #boleta-generada {
+            margin-top: 32px;
+            display: flex;
+            justify-content: center;
+        }
+        #boleta-cuadro {
+            background: #f9f9f9;
+            border: 2px dashed #00f62d;
+            border-radius: 10px;
+            padding: 28px 36px;
+            min-width: 260px;
+            box-shadow: 0 1px 6px rgba(52,152,219,0.07);
+            text-align: center;
+        }
+        #boleta-cuadro h3 {
+            margin-top: 0;
+            color: #00ff6e;
+            font-size: 1.2em;
+            margin-bottom: 18px;
+        }
+        #boleta-cuadro p {
+            margin: 10px 0;
+            font-size: 1.08em;
+        }
+        #boleta-cuadro button {
+            margin-top: 18px;
+            padding: 10px 30px;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #boleta-cuadro button:hover {
+            background: #219150;
+        }
+        @media (max-width: 600px) {
+            .formulario-boleta {
+                padding: 12px 2vw 18px 2vw;
+                max-width: 98vw;
+            }
+            #boleta-cuadro {
+                padding: 16px 6vw;
+                min-width: unset;
+            }
+        }
+        @media print {
+            body {
+                background: #fff;
+            }
+            .formulario-boleta, button, h2 {
+                display: none !important;
+            }
+            #boleta-generada, #boleta-cuadro {
+                border: none;
+                background: #fff;
+                box-shadow: none;
+                margin-top: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form class="formulario-boleta" id="form-boleta" autocomplete="off">
+        <h2>Generar Boleta de Pago</h2>
+        <label>Departamento:</label>
+        <input type="text" id="departamento" name="departamento" readonly>
+        <label>Inquilino:</label>
+        <input type="text" id="inquilino" name="inquilino" readonly>
+        <label>Mensualidad (S/):</label>
+        <input type="number" id="mensualidad" name="mensualidad" readonly>
+        <label>Mes:</label>
+        <input type="text" id="mes" name="mes" readonly>
+        <label>Consumo de luz anterior (kWh):</label>
+        <input type="number" id="luz-anterior" name="luz-anterior" min="0" required>
+        <label>Consumo de luz actual (kWh):</label>
+        <input type="number" id="luz-actual" name="luz-actual" min="0" required>
+        <label>Valor por kWh (S/):</label>
+        <input type="number" id="valor-luz" name="valor-luz" min="0" step="0.01" required>
+        <label>Monto de agua (S/):</label>
+        <input type="number" id="agua" name="agua" min="0" step="0.01" required>
+        <label>¿Hay saldo anterior?</label>
+        <input type="number" id="saldo" name="saldo" min="0" step="0.01" value="0">
+        <label>Descripción de saldo:</label>
+        <textarea id="descripcion" name="descripcion" rows="2"></textarea>
+        <label>Fecha de pago:</label>
+        <input type="date" id="fecha" name="fecha" required>
+        <button type="submit">Generar Boleta</button>
+    </form>
+    <div id="boleta-generada"></div>
+    <script>
+        // Obtener parámetros de la URL
+        const params = new URLSearchParams(window.location.search);
+        const depId = params.get('depId');
+        const mensualidad = params.get('mensualidad');
+        const inquilino = decodeURIComponent(params.get('inquilino') || '');
+        const mes = decodeURIComponent(params.get('mes') || '');
+        const frecuencia = decodeURIComponent(params.get('frecuencia') || 'Mensual');
+
+        // Rellenar los campos fijos
+        document.getElementById('departamento').value = depId ? `DEP ${depId}` : '';
+        document.getElementById('inquilino').value = inquilino;
+        document.getElementById('mensualidad').value = mensualidad;
+        document.getElementById('mes').value = mes;
+
+        document.getElementById('form-boleta').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Obtener valores del formulario
+            const luzAnterior = parseFloat(document.getElementById('luz-anterior').value) || 0;
+            const luzActual = parseFloat(document.getElementById('luz-actual').value) || 0;
+            const valorLuz = parseFloat(document.getElementById('valor-luz').value) || 0;
+            const agua = parseFloat(document.getElementById('agua').value) || 0;
+            const saldo = parseFloat(document.getElementById('saldo').value) || 0;
+            const descripcion = document.getElementById('descripcion').value;
+            const fecha = document.getElementById('fecha').value;
+
+            // Calcular consumo de luz
+            const consumoLuz = Math.max(luzActual - luzAnterior, 0);
+            const montoLuz = consumoLuz * valorLuz;
+
+            // Calcular total
+            const montoMensualidad = parseFloat(mensualidad) || 0;
+            const total = montoMensualidad + montoLuz + agua + saldo;
+
+            // Mostrar boleta
+            document.getElementById('boleta-generada').innerHTML = `
+                <div id="boleta-cuadro">
+                    <h3>Recibo</h3>
+                    <p><strong>Departamento:</strong> DEP ${depId}</p>
+                    <p><strong>Inquilino:</strong> ${inquilino}</p>
+                    <p><strong>Mes:</strong> ${mes}</p>
+                    <p><strong>Mensualidad:</strong> S/ ${montoMensualidad.toFixed(2)}</p>
+                    <p><strong>Consumo de luz:</strong> ${consumoLuz} kWh x S/ ${valorLuz.toFixed(2)} = <strong>S/ ${montoLuz.toFixed(2)}</strong></p>
+                    <p><strong>Monto de agua:</strong> S/ ${agua.toFixed(2)}</p>
+                    <p><strong>Saldo anterior:</strong> S/ ${saldo.toFixed(2)}</p>
+                    <p><strong>Descripción:</strong> ${descripcion ? descripcion : '-'}</p>
+                    <p><strong>Fecha de pago:</strong> ${fecha}</p>
+                    <hr>
+                    <p style="font-size:1.2em;"><strong>TOTAL A PAGAR: S/ ${total.toFixed(2)}</strong></p>
+                    <button id="descargar-boleta">Descargar Boleta</button>
+                </div>
+            `;
+
+            // Espera a que el botón esté en el DOM y agrega el evento para descargar la boleta como imagen y redirigir
+            setTimeout(() => {
+                const btnDescargar = document.getElementById('descargar-boleta');
+                if (btnDescargar) {
+                    btnDescargar.addEventListener('click', function() {
+                        const boleta = document.getElementById('boleta-cuadro');
+                        html2canvas(boleta).then(canvas => {
+                            // Descargar imagen
+                            const link = document.createElement('a');
+                            link.download = `boleta_${depId}_${fecha}.png`;
+                            link.href = canvas.toDataURL();
+                            link.click();
+                            // Codificar la boleta en base64 y redirigir a departamento.html
+                            const boletaHTML = boleta.outerHTML;
+                            const boletaBase64 = btoa(boletaHTML);
+                            setTimeout(() => {
+                                window.location.href = `departamento.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&frecuencia=${encodeURIComponent(frecuencia)}&mes=${encodeURIComponent(mes)}&pagado=1&boleta=${encodeURIComponent(boletaBase64)}`;
+                            }, 500); // Espera medio segundo para asegurar la descarga
+                        });
+                    });
+                }
+            }, 100);
+
+            // Opcional: hacer scroll a la boleta
+            document.getElementById('boleta-generada').scrollIntoView({behavior: "smooth"});
+        });
+    </script>
+</body>
+</html>
