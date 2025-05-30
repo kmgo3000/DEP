@@ -179,6 +179,16 @@ h2 {
 }
 
 @media (max-width: 700px) {
+    @media (max-width: 700px) {
+    #contenedor {
+        padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
+        max-width: 100vw;
+        width: 100vw;
+        margin: 10px 0;
+        border-radius: 0;
+        box-shadow: none;
+        box-sizing: border-box; /* Aseguramos que el padding (si lo hubiera) se incluya en el ancho */
+    }
     html, body {
         width: 100vw;
         min-width: 100vw;
