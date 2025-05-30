@@ -225,4 +225,27 @@ h1, h2 {
         padding: 1rem 0;
         margin: 1rem auto;
     }
+    /* Imágenes responsivas */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Boleta responsiva */
+#boleta, #boleta-cuadro, .boleta, .boleta-cuadro {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+@media (max-width: 700px) {
+  #boleta, #boleta-cuadro, .boleta, .boleta-cuadro {
+    padding: 0 2vw;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
 }
