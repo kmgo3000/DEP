@@ -83,16 +83,56 @@
         #boleta-cuadro button:hover {
             background: #219150;
         }
-        @media (max-width: 600px) {
-            .formulario-boleta {
-                padding: 12px 2vw 18px 2vw;
-                max-width: 98vw;
-            }
-            #boleta-cuadro {
-                padding: 16px 6vw;
-                min-width: unset;
-            }
+      @media (max-width: 600px) {
+    .formulario-boleta {
+        padding: 12px 0 18px 0; /* Eliminamos el padding horizontal */
+        max-width: 100%; /* Aseguramos que ocupe el 100% del ancho disponible */
+        width: 100%; /* Aseguramos el 100% */
+        box-sizing: border-box; /* Incluye el padding y borde en el cálculo del ancho total */
+        margin: 40px auto; /* Mantenemos el margen vertical y centrado */
+    }
+    #boleta-cuadro {
+        padding: 16px 0; /* Eliminamos el padding horizontal */
+        min-width: unset;
+        width: 100%; /* Aseguramos que ocupe el 100% del ancho disponible */
+        max-width: 100%; /* Aseguramos el 100% */
+        box-sizing: border-box; /* Incluye el padding y borde en el cálculo del ancho total */
+        margin-top: 32px; /* Mantenemos el margen superior */
+    }
+    /* Aseguramos que las imágenes y otros elementos también sean responsivos si los hubiera */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Aseguramos que la boleta generada sea responsiva */
+    #boleta-generada {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto; /* Añadido por si el contenido interno es muy ancho */
+    }
+
+    /* Regla de impresión para móviles */
+    @media print {
+        body {
+            background: #fff;
         }
+        .formulario-boleta, button, h2 {
+            display: none !important;
+        }
+        #boleta-generada, #boleta-cuadro {
+            border: none;
+            background: #fff;
+            box-shadow: none;
+            margin-top: 0;
+            padding: 0;
+        }
+    }
+}
+
         @media print {
             body {
                 background: #fff;
