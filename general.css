@@ -176,11 +176,12 @@ h1, h2 {
         box-sizing: border-box;
     }
     .pisos-1, .pisos-2 {
-        flex: 1 1 50%;
+        flex: 1; /* Permite que las columnas crezcan y se encojan equitativamente */
         gap: 8px;
         margin-bottom: 0;
-        width: 50%;
+        /* Eliminamos width: 50%; para que flex: 1; controle el ancho */
         align-items: stretch;
+        width: auto; /* Aseguramos que el ancho sea automático */
     }
     .departamento {
         min-width: 0;
