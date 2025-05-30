@@ -178,8 +178,9 @@ h2 {
     }
 }
 
+/* ... (código CSS anterior) ... */
+
 @media (max-width: 700px) {
-    @media (max-width: 700px) {
     #contenedor {
         padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
         max-width: 100vw;
@@ -194,53 +195,64 @@ h2 {
         min-width: 100vw;
         max-width: 100vw;
         overflow-x: hidden;
-        font-size: 20px;
+        font-size: 20px; /* Ajusta según necesites */
     }
     nav {
         padding: 18px 0 18px 0;
     }
     nav a {
-        font-size: 2.2em;
-        padding: 18px 8vw;
+        font-size: 2.2em; /* Ajusta según necesites */
+        padding: 18px 8vw; /* Ajusta según necesites */
         border-radius: 16px;
     }
+    /* Aseguramos que el contenedor principal ocupe el ancho completo */
     #contenedor {
-        padding: 10px 1vw 18px 1vw;
+        padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
         max-width: 100vw;
         width: 100vw;
         margin: 10px 0;
         border-radius: 0;
         box-shadow: none;
+        box-sizing: border-box;
     }
     #meses-botones {
         max-width: 100vw;
         width: 100vw;
-        gap: 14px;
+        gap: 14px; /* Ajusta el espacio entre botones */
+        padding: 0 2vw; /* Añadimos un pequeño padding horizontal si es necesario */
+        box-sizing: border-box;
     }
     .mes-btn {
-        min-width: 90vw;
-        max-width: 98vw;
-        width: 98vw;
-        font-size: 1.7em;
-        height: 70px;
+        min-width: 90vw; /* Ajusta según necesites */
+        max-width: 98vw; /* Ajusta según necesites */
+        width: 98vw; /* Ajusta según necesites */
+        font-size: 1.7em; /* Ajusta según necesites */
+        height: 70px; /* Ajusta según necesites */
         border-radius: 18px;
         margin-bottom: 12px;
+        box-sizing: border-box;
+        color: #222; /* Texto negro para botones de mes */
     }
     #boleta-cuadro {
-        padding: 16px 2vw;
+        padding: 16px 2vw; /* Mantenemos un pequeño padding interno */
         min-width: unset;
-        width: 100vw;
+        width: 100vw; /* Ocupa todo el ancho */
         box-sizing: border-box;
         border-radius: 0;
     }
     #datos-dep {
-        font-size: 1.22em;
-        width: 100vw;
+        font-size: 1.22em; /* Ajusta según necesites */
+        width: 100vw; /* Ocupa todo el ancho */
         box-sizing: border-box;
         border-radius: 0;
+        padding: 16px 2vw; /* Añadimos padding interno */
     }
     h2 {
-        font-size: 2em;
+        font-size: 2em; /* Ajusta según necesites */
+    }
+    #boleta-cuadro p {
+        font-size: 1.22em; /* Ajusta según necesites */
+        color: #222; /* Texto negro para estado de boleta */
     }
 }
 
@@ -250,54 +262,76 @@ h2 {
         min-width: 100vw;
         max-width: 100vw;
         overflow-x: hidden;
-        font-size: 22px;
+        font-size: 22px; /* Ajusta según necesites */
     }
     nav {
         padding: 18px 0 18px 0;
     }
     nav a {
-        font-size: 2.5em;
-        padding: 20px 10vw;
+        font-size: 2.5em; /* Ajusta según necesites */
+        padding: 20px 10vw; /* Ajusta según necesites */
         border-radius: 18px;
+    }
+    #contenedor {
+        padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
+        max-width: 100vw;
+        width: 100vw;
+        margin: 10px 0;
+        border-radius: 0;
+        box-shadow: none;
+        box-sizing: border-box;
     }
     #meses-botones {
         flex-direction: column;
         align-items: center;
         width: 100vw;
-        gap: 18px;
+        gap: 18px; /* Ajusta el espacio entre botones */
+        padding: 0 2vw; /* Añadimos un pequeño padding horizontal si es necesario */
+        box-sizing: border-box;
     }
     .mes-btn {
-        width: 96vw;
+        width: 96vw; /* Ajusta según necesites */
         max-width: 100vw;
         min-width: 0;
         margin-bottom: 16px;
-        padding: 18px;
-        font-size: 1.4em;
+        padding: 18px; /* Ajusta según necesites */
+        font-size: 1.4em; /* Ajusta según necesites */
         box-sizing: border-box;
-        height: 80px;
+        height: 80px; /* Ajusta según necesites */
         border-radius: 20px;
+        color: #222; /* Texto negro para botones de mes */
     }
     #boleta-cuadro {
-        width: 100vw;
+        width: 100vw; /* Ocupa todo el ancho */
         box-sizing: border-box;
-        padding: 16px 2vw;
+        padding: 16px 2vw; /* Mantenemos un pequeño padding interno */
         border-radius: 0;
     }
-    h2, h3 {
-        font-size: 1.5em;
+     #datos-dep {
+        font-size: 1.22em; /* Ajusta según necesites */
+        width: 100vw; /* Ocupa todo el ancho */
+        box-sizing: border-box;
+        border-radius: 0;
+        padding: 16px 2vw; /* Añadimos padding interno */
     }
-    #datos-dep, #boleta-cuadro p {
-        font-size: 1.22em;
+    h2, h3 {
+        font-size: 1.5em; /* Ajusta según necesites */
+    }
+    #boleta-cuadro p {
+        font-size: 1.22em; /* Ajusta según necesites */
+        color: #222; /* Texto negro para estado de boleta */
     }
 }
 
 .mes-pagado {
     background: #27ae60 !important;   /* Verde */
-    color: #fff !important;
+    color: #222 !important; /* Texto negro para mes pagado */
     border: 2px solid #219150 !important;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(39, 174, 96, 0.10);
 }
+
+/* ... (código CSS posterior) ... */
 
 @media print {
     body {
