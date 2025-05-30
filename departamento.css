@@ -233,25 +233,39 @@ h2 {
         box-sizing: border-box;
         color: #222; /* Texto negro para botones de mes */
     }
+    #boleta {
+        margin-top: 28px;
+        display: flex; /* Mantenemos flex para centrar el cuadro */
+        justify-content: center;
+        width: 100%; /* Aseguramos que el contenedor padre ocupe todo el ancho */
+        box-sizing: border-box;
+        padding: 0 2vw; /* Añadimos un pequeño padding horizontal al contenedor padre */
+    }
+
     #boleta-cuadro {
-        padding: 16px 2vw; /* Mantenemos un pequeño padding interno */
+        background: #f9f9f9;
+        border: 2px dashed #3498db;
+        border-radius: 14px; /* Mantenemos el borde redondeado por defecto */
+        padding: 16px 2vw; /* Mantenemos un padding interno para el contenido */
         min-width: unset;
-        width: 100vw; /* Ocupa todo el ancho */
-        box-sizing: border-box;
-        border-radius: 0;
+        width: 100%; /* Ocupa el 100% del ancho de su padre (#boleta) */
+        max-width: 100%; /* Aseguramos que no se desborde */
+        box-shadow: 0 1px 6px rgba(52,152,219,0.07);
+        text-align: center; /* Centramos el texto dentro del cuadro */
+        box-sizing: border-box; /* Incluye padding y borde en el cálculo del ancho */
+        /* Eliminamos border-radius: 0; si quieres que tenga borde redondeado en móvil */
     }
-    #datos-dep {
-        font-size: 1.22em; /* Ajusta según necesites */
-        width: 100vw; /* Ocupa todo el ancho */
-        box-sizing: border-box;
-        border-radius: 0;
-        padding: 16px 2vw; /* Añadimos padding interno */
+
+    #boleta-cuadro h3 {
+        margin-top: 0;
+        color: #217dbb;
+        font-size: 1.3em;
+        margin-bottom: 18px;
     }
-    h2 {
-        font-size: 2em; /* Ajusta según necesites */
-    }
+
     #boleta-cuadro p {
-        font-size: 1.22em; /* Ajusta según necesites */
+        margin: 10px 0; /* Mantenemos el margen vertical */
+        font-size: 1.22em; /* Ajusta el tamaño de fuente */
         color: #222; /* Texto negro para estado de boleta */
     }
 }
@@ -301,25 +315,29 @@ h2 {
         border-radius: 20px;
         color: #222; /* Texto negro para botones de mes */
     }
+   #boleta {
+        margin-top: 28px;
+        display: flex; /* Mantenemos flex para centrar el cuadro */
+        justify-content: center;
+        width: 100%; /* Aseguramos que el contenedor padre ocupe todo el ancho */
+        box-sizing: border-box;
+        padding: 0 2vw; /* Añadimos un pequeño padding horizontal al contenedor padre */
+    }
+
     #boleta-cuadro {
-        width: 100vw; /* Ocupa todo el ancho */
+        width: 100%; /* Ocupa el 100% del ancho de su padre (#boleta) */
+        max-width: 100%; /* Aseguramos que no se desborde */
         box-sizing: border-box;
-        padding: 16px 2vw; /* Mantenemos un pequeño padding interno */
-        border-radius: 0;
+        padding: 16px 2vw; /* Mantenemos un padding interno para el contenido */
+        border-radius: 14px; /* Mantenemos el borde redondeado por defecto */
+        text-align: center; /* Centramos el texto dentro del cuadro */
+        /* Eliminamos border-radius: 0; si quieres que tenga borde redondeado en móvil */
     }
-     #datos-dep {
-        font-size: 1.22em; /* Ajusta según necesites */
-        width: 100vw; /* Ocupa todo el ancho */
-        box-sizing: border-box;
-        border-radius: 0;
-        padding: 16px 2vw; /* Añadimos padding interno */
-    }
-    h2, h3 {
-        font-size: 1.5em; /* Ajusta según necesites */
-    }
+
     #boleta-cuadro p {
-        font-size: 1.22em; /* Ajusta según necesites */
+        font-size: 1.22em; /* Ajusta el tamaño de fuente */
         color: #222; /* Texto negro para estado de boleta */
+        margin: 10px 0; /* Mantenemos el margen vertical */
     }
 }
 
