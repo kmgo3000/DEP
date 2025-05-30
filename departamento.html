@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <title>Departamento</title>
+
+    <link rel="stylesheet" href="general.css">
     <link rel="stylesheet" href="departamento.css">
-       <style>
+    <style>
         .reiniciar-btn {
             margin: 20px 0;
             padding: 10px 20px;
@@ -21,11 +22,12 @@
 
 <body>
     <!-- Menú de navegación -->
-<nav style="background: #f3f3f3; padding: 12px 0 12px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 18px;">
-  <a href="index.html" style="text-decoration:none; color:#2196f3; font-weight:600; font-size:1.1em;">
-    🏠 Inicio
-  </a>
-</nav>
+    <nav
+        style="background: #f3f3f3; padding: 12px 0 12px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 18px;">
+        <a href="index.html" style="text-decoration:none; color:#2196f3; font-weight:600; font-size:1.1em;">
+            🏠 Inicio
+        </a>
+    </nav>
     <div id="contenedor">
         <h2 id="titulo-dep"></h2>
         <div id="datos-dep">
@@ -38,7 +40,7 @@
             <div id="meses-botones">
                 <!-- Los botones de los meses se generan dinámicamente -->
             </div>
-              <button id="reiniciar-meses" class="reiniciar-btn">Reiniciar todos los meses</button>
+            <button id="reiniciar-meses" class="reiniciar-btn">Reiniciar todos los meses</button>
         </div>
         <div id="boleta"></div>
     </div>
@@ -82,19 +84,19 @@
             const key = `boleta_DEP${depId}_${mes}`;
             return localStorage.getItem(key);
         }
-          // Reiniciar todos los meses a "Pendiente"
+        // Reiniciar todos los meses a "Pendiente"
         function reiniciarMeses(depId) {
             if (confirm('¿Estás seguro de reiniciar todos los meses a "Pendiente"? Esta acción no se puede deshacer.')) {
                 const estadoInicial = {};
                 meses.forEach(m => estadoInicial[m] = "Pendiente");
                 setPagos(depId, estadoInicial);
-                
+
                 // También eliminar todas las boletas guardadas
                 meses.forEach(mes => {
                     const key = `boleta_DEP${depId}_${mes}`;
                     localStorage.removeItem(key);
                 });
-                
+
                 // Actualizar la interfaz
                 mostrarMeses(depId);
                 document.getElementById('boleta').innerHTML = "";
@@ -106,30 +108,30 @@
             const pagos = getPagos(depId);
             const mesesBotonesDiv = document.getElementById('meses-botones');
             mesesBotonesDiv.innerHTML = ""; // Limpiar antes de agregar
-meses.forEach(mes => {
-    const btn = document.createElement('button');
-    btn.textContent = `${mes} (${pagos[mes]})`;
-    btn.className = 'mes-btn';
-    if (pagos[mes] === "Pagado") {
-        btn.classList.add('mes-pagado'); // <-- Esto es clave
-        btn.style.opacity = 1;
-    }
-    btn.addEventListener('click', function () {
-        if (pagos[mes] === "Pagado") {
-            // Mostrar la boleta guardada
-            const boletaHTML = obtenerBoleta(depId, mes);
-            if (boletaHTML) {
-                document.getElementById('boleta').innerHTML = boletaHTML;
-            } else {
-                document.getElementById('boleta').innerHTML = `<div id="boleta-cuadro"><p>No se encontró la boleta guardada para este mes.</p></div>`;
-            }
-        } else {
-            // Redirige a generar_boleta.html con los datos necesarios
-            window.location.href = `generar_boleta.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&mes=${encodeURIComponent(mes)}&frecuencia=${encodeURIComponent(frecuencia)}`;
-        }
-    });
-    mesesBotonesDiv.appendChild(btn);
-});
+            meses.forEach(mes => {
+                const btn = document.createElement('button');
+                btn.textContent = `${mes} (${pagos[mes]})`;
+                btn.className = 'mes-btn';
+                if (pagos[mes] === "Pagado") {
+                    btn.classList.add('mes-pagado'); // <-- Esto es clave
+                    btn.style.opacity = 1;
+                }
+                btn.addEventListener('click', function () {
+                    if (pagos[mes] === "Pagado") {
+                        // Mostrar la boleta guardada
+                        const boletaHTML = obtenerBoleta(depId, mes);
+                        if (boletaHTML) {
+                            document.getElementById('boleta').innerHTML = boletaHTML;
+                        } else {
+                            document.getElementById('boleta').innerHTML = `<div id="boleta-cuadro"><p>No se encontró la boleta guardada para este mes.</p></div>`;
+                        }
+                    } else {
+                        // Redirige a generar_boleta.html con los datos necesarios
+                        window.location.href = `generar_boleta.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&mes=${encodeURIComponent(mes)}&frecuencia=${encodeURIComponent(frecuencia)}`;
+                    }
+                });
+                mesesBotonesDiv.appendChild(btn);
+            });
         }
 
         // Marcar mes como pagado y guardar la boleta si viene de generar_boleta.html
@@ -159,11 +161,11 @@ meses.forEach(mes => {
                 // Mostrar la boleta recién guardada
                 document.getElementById('boleta').innerHTML = boletaHTML;
             }
-                // Mostrar los meses
+            // Mostrar los meses
             mostrarMeses(depId);
-            
+
             // Configurar el botón de reinicio
-            document.getElementById('reiniciar-meses').addEventListener('click', function() {
+            document.getElementById('reiniciar-meses').addEventListener('click', function () {
                 reiniciarMeses(depId);
             });
         }
