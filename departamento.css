@@ -1,61 +1,65 @@
-/* Reset básico */
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f7f7f7;
-    margin: 0;
-    padding: 0;
-    color: #222;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Menú de navegación destacado */
-nav {
-    background: #f3f3f3;
-    padding: 18px 0 18px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    margin-bottom: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-nav a {
+/* Reset y base */
+/* Botón de inicio grande y responsivo */
+.inicio-btn {
+    display: inline-block;
     text-decoration: none;
     color: #2196f3;
     font-weight: 700;
-    font-size: 2em;
+    font-size: 1.3em;
     letter-spacing: 0.5px;
-    display: inline-block;
     padding: 16px 36px;
     border-radius: 12px;
     background: #e3f2fd;
     transition: background 0.18s, color 0.18s, box-shadow 0.18s;
     box-shadow: 0 2px 8px rgba(33,150,243,0.07);
+    margin: 0 auto;
 }
-nav a:active, nav a:focus, nav a:hover {
+.inicio-btn:active, .inicio-btn:focus, .inicio-btn:hover {
     background: #2196f3;
     color: #fff;
     box-shadow: 0 4px 16px rgba(33,150,243,0.13);
 }
 
-/* Contenedor principal centrado y flexible */
-#contenedor {
-    max-width: 500px;
-    margin: 40px auto;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    padding: 32px 20px 36px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    flex: 1 0 auto;
+/* Haz el botón más grande en móvil */
+@media (max-width: 700px) {
+    .inicio-btn {
+        font-size: 2.2em;
+        padding: 22px 10vw;
+        border-radius: 18px;
+    }
+    nav {
+        text-align: center;
+    }
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+    color: #222;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    min-height: 100vh;
 }
 
+/* Contenedor principal */
+#contenedor {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    background: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    border-radius: 16px;
+    padding: 0 0 24px 0;
+}
+
+/* Títulos y datos */
 h2 {
     text-align: center;
-    margin-top: 0;
+    margin-top: 24px;
     color: #2c3e50;
     letter-spacing: 1px;
     font-size: 2em;
@@ -67,11 +71,13 @@ h2 {
     background: #f0f4f8;
     border-radius: 10px;
     box-shadow: 0 1px 4px rgba(44,62,80,0.04);
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
+/* Cuadro de meses */
 #meses-cuadro {
-    margin: 24px 0 0 0;
+    flex: 1 0 auto;
+    margin: 0;
     padding: 18px 0 10px 0;
     background: #eaf6fb;
     border-radius: 14px;
@@ -79,6 +85,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 60vh;
 }
 
 #meses-cuadro h3 {
@@ -86,7 +93,7 @@ h2 {
     margin: 0 0 18px 0;
     color: #217dbb;
     font-weight: 600;
-    font-size: 1.3em;
+    font-size: 1.2em;
     letter-spacing: 0.5px;
 }
 
@@ -95,20 +102,23 @@ h2 {
     flex-wrap: wrap;
     gap: 18px;
     justify-content: center;
+    align-items: flex-start;
     width: 100%;
-    max-width: 420px;
+    min-height: 40vh;
+    margin-bottom: 0;
 }
 
+/* Botón de mes base */
 .mes-btn {
     flex: 1 1 160px;
-    min-width: 140px;
+    min-width: 120px;
     max-width: 180px;
-    height: 64px;
+    height: 56px;
     background: #3498db;
     color: #fff;
     border: none;
     border-radius: 14px;
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
@@ -124,32 +134,85 @@ h2 {
     transform: translateY(-2px) scale(1.04);
 }
 
-#boleta {
-    margin-top: 28px;
-    display: flex;
-    justify-content: center;
+/* Botón de mes pagado: VERDE */
+.mes-btn.mes-pagado {
+    background: #27ae60 !important;
+    color: #fff !important;
+    border: 2px solid #219150 !important;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.10);
+    position: relative;
 }
 
+.mes-btn.mes-pagado:hover,
+.mes-btn.mes-pagado:focus {
+    background: #219150 !important;
+    color: #fff !important;
+    border: 2px solid #17693a !important;
+}
+
+.mes-btn.mes-pagado::before {
+    content: "✔ ";
+    color: #fff;
+    font-size: 1em;
+    margin-right: 0.3em;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* Botón de reinicio */
+.reiniciar-btn {
+    margin: 20px 0;
+    padding: 10px 20px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.reiniciar-btn:hover {
+    background: #c62828;
+}
+
+/* Boleta: solo aparece cuando hay contenido */
+#boleta {
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    min-height: 0;
+}
+#boleta:empty {
+    display: none;
+}
+
+/* Boleta visual */
 #boleta-cuadro {
     background: #f9f9f9;
     border: 2px dashed #3498db;
     border-radius: 14px;
     padding: 28px 20px;
     min-width: 260px;
+    max-width: 600px;
+    margin: 32px auto 0 auto;
     box-shadow: 0 1px 6px rgba(52,152,219,0.07);
     text-align: center;
+    box-sizing: border-box;
 }
 
 #boleta-cuadro h3 {
     margin-top: 0;
     color: #217dbb;
-    font-size: 1.3em;
+    font-size: 1.2em;
     margin-bottom: 18px;
 }
 
 #boleta-cuadro p {
     margin: 10px 0;
-    font-size: 1.15em;
+    font-size: 1.1em;
 }
 
 #boleta-cuadro button {
@@ -159,198 +222,77 @@ h2 {
     color: #fff;
     border: none;
     border-radius: 10px;
-    font-size: 1.2em;
+    font-size: 1.1em;
     cursor: pointer;
     transition: background 0.2s;
 }
-
 #boleta-cuadro button:hover {
     background: #219150;
 }
 
-@media (max-width: 900px) {
-    #contenedor {
-        max-width: 98vw;
-        padding: 18px 2vw 24px 2vw;
-    }
-    #meses-botones {
-        max-width: 100vw;
-    }
-}
-
-/* ... (código CSS anterior) ... */
-
+/* Responsive para móvil */
 @media (max-width: 700px) {
     #contenedor {
-        padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
-        max-width: 100vw;
+        min-height: 100vh;
         width: 100vw;
-        margin: 10px 0;
+        max-width: 100vw;
+        padding: 0;
         border-radius: 0;
         box-shadow: none;
-        box-sizing: border-box; /* Aseguramos que el padding (si lo hubiera) se incluya en el ancho */
     }
-    html, body {
-        width: 100vw;
-        min-width: 100vw;
-        max-width: 100vw;
-        overflow-x: hidden;
-        font-size: 20px; /* Ajusta según necesites */
-    }
-    nav {
-        padding: 18px 0 18px 0;
-    }
-    nav a {
-        font-size: 2.2em; /* Ajusta según necesites */
-        padding: 18px 8vw; /* Ajusta según necesites */
-        border-radius: 16px;
-    }
-    /* Aseguramos que el contenedor principal ocupe el ancho completo */
-    #contenedor {
-        padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
-        max-width: 100vw;
-        width: 100vw;
-        margin: 10px 0;
-        border-radius: 0;
-        box-shadow: none;
+    #datos-dep {
+        font-size: 1em;
+        width: 100%;
+        max-width: 100%;
         box-sizing: border-box;
+        border-radius: 0;
+        padding: 12px 2vw;
+    }
+    #meses-cuadro {
+        width: 100vw;
+        max-width: 100vw;
+        box-sizing: border-box;
+        border-radius: 0;
+        min-height: 50vh;
+        padding: 10px 0 10px 0;
     }
     #meses-botones {
-        max-width: 100vw;
+        min-height: 30vh;
         width: 100vw;
-        gap: 14px; /* Ajusta el espacio entre botones */
-        padding: 0 2vw; /* Añadimos un pequeño padding horizontal si es necesario */
+        max-width: 100vw;
+        gap: 12px;
+        padding: 0 2vw;
         box-sizing: border-box;
     }
     .mes-btn {
-        min-width: 90vw; /* Ajusta según necesites */
-        max-width: 98vw; /* Ajusta según necesites */
-        width: 98vw; /* Ajusta según necesites */
-        font-size: 1.7em; /* Ajusta según necesites */
-        height: 70px; /* Ajusta según necesites */
-        border-radius: 18px;
-        margin-bottom: 12px;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        font-size: 1.1em;
+        height: 56px;
+        border-radius: 12px;
+        margin-bottom: 0;
         box-sizing: border-box;
-        color: #222; /* Texto negro para botones de mes */
+        color: #fff;
     }
-    #boleta {
-        margin-top: 28px;
-        display: flex; /* Mantenemos flex para centrar el cuadro */
-        justify-content: center;
-        width: 100%; /* Aseguramos que el contenedor padre ocupe todo el ancho */
-        box-sizing: border-box;
-        padding: 0 2vw; /* Añadimos un pequeño padding horizontal al contenedor padre */
-    }
-
-    #boleta-cuadro {
-        background: #f9f9f9;
-        border: 2px dashed #3498db;
-        border-radius: 14px; /* Mantenemos el borde redondeado por defecto */
-        padding: 16px 2vw; /* Mantenemos un padding interno para el contenido */
-        min-width: unset;
-        width: 100%; /* Ocupa el 100% del ancho de su padre (#boleta) */
-        max-width: 100%; /* Aseguramos que no se desborde */
-        box-shadow: 0 1px 6px rgba(52,152,219,0.07);
-        text-align: center; /* Centramos el texto dentro del cuadro */
-        box-sizing: border-box; /* Incluye padding y borde en el cálculo del ancho */
-        /* Eliminamos border-radius: 0; si quieres que tenga borde redondeado en móvil */
-    }
-
-    #boleta-cuadro h3 {
-        margin-top: 0;
-        color: #217dbb;
-        font-size: 1.3em;
-        margin-bottom: 18px;
-    }
-
-    #boleta-cuadro p {
-        margin: 10px 0; /* Mantenemos el margen vertical */
-        font-size: 1.22em; /* Ajusta el tamaño de fuente */
-        color: #222; /* Texto negro para estado de boleta */
-    }
-}
-
-@media (max-width: 480px) {
-    html, body {
+    #boleta, #boleta-cuadro {
         width: 100vw;
-        min-width: 100vw;
-        max-width: 100vw;
-        overflow-x: hidden;
-        font-size: 22px; /* Ajusta según necesites */
-    }
-    nav {
-        padding: 18px 0 18px 0;
-    }
-    nav a {
-        font-size: 2.5em; /* Ajusta según necesites */
-        padding: 20px 10vw; /* Ajusta según necesites */
-        border-radius: 18px;
-    }
-    #contenedor {
-        padding: 10px 0 18px 0; /* Eliminamos el padding horizontal */
-        max-width: 100vw;
-        width: 100vw;
-        margin: 10px 0;
-        border-radius: 0;
-        box-shadow: none;
-        box-sizing: border-box;
-    }
-    #meses-botones {
-        flex-direction: column;
-        align-items: center;
-        width: 100vw;
-        gap: 18px; /* Ajusta el espacio entre botones */
-        padding: 0 2vw; /* Añadimos un pequeño padding horizontal si es necesario */
-        box-sizing: border-box;
-    }
-    .mes-btn {
-        width: 96vw; /* Ajusta según necesites */
         max-width: 100vw;
         min-width: 0;
-        margin-bottom: 16px;
-        padding: 18px; /* Ajusta según necesites */
-        font-size: 1.4em; /* Ajusta según necesites */
         box-sizing: border-box;
-        height: 80px; /* Ajusta según necesites */
-        border-radius: 20px;
-        color: #222; /* Texto negro para botones de mes */
+        padding: 0 2vw;
     }
-   #boleta {
-        margin-top: 28px;
-        display: flex; /* Mantenemos flex para centrar el cuadro */
-        justify-content: center;
-        width: 100%; /* Aseguramos que el contenedor padre ocupe todo el ancho */
-        box-sizing: border-box;
-        padding: 0 2vw; /* Añadimos un pequeño padding horizontal al contenedor padre */
-    }
-
     #boleta-cuadro {
-        width: 100%; /* Ocupa el 100% del ancho de su padre (#boleta) */
-        max-width: 100%; /* Aseguramos que no se desborde */
-        box-sizing: border-box;
-        padding: 16px 2vw; /* Mantenemos un padding interno para el contenido */
-        border-radius: 14px; /* Mantenemos el borde redondeado por defecto */
-        text-align: center; /* Centramos el texto dentro del cuadro */
-        /* Eliminamos border-radius: 0; si quieres que tenga borde redondeado en móvil */
-    }
-
-    #boleta-cuadro p {
-        font-size: 1.22em; /* Ajusta el tamaño de fuente */
-        color: #222; /* Texto negro para estado de boleta */
-        margin: 10px 0; /* Mantenemos el margen vertical */
+        margin-top: 24px;
+        padding: 18px 2vw;
+        min-width: unset;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 10px;
     }
 }
 
-.mes-pagado {
-    background: #27ae60 !important;   /* Verde */
-    color: #222 !important; /* Texto negro para mes pagado */
-    border: 2px solid #219150 !important;
-    font-weight: bold;
-    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.10);
-}
-
-/* ... (código CSS posterior) ... */
-
+/* PRINT: Oculta todo menos la boleta */
 @media print {
     body {
         background: #fff;
