@@ -110,7 +110,14 @@
         }
     </style>
 </head>
+
 <body>
+    <!-- Menú de navegación -->
+<nav style="background: #f3f3f3; padding: 12px 0 12px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 18px;">
+  <a href="index.html" style="text-decoration:none; color:#2196f3; font-weight:600; font-size:1.1em;">
+    🏠 Inicio
+  </a>
+</nav>
     <form class="formulario-boleta" id="form-boleta" autocomplete="off">
         <h2>Generar Boleta de Pago</h2>
         <label>Departamento:</label>
@@ -118,7 +125,7 @@
         <label>Inquilino:</label>
         <input type="text" id="inquilino" name="inquilino" readonly>
         <label>Mensualidad (S/):</label>
-        <input type="number" id="mensualidad" name="mensualidad" readonly>
+        <input type="number" id="mensualidad" name="mensualidad">
         <label>Mes:</label>
         <input type="text" id="mes" name="mes" readonly>
         <label>Consumo de luz anterior (kWh):</label>
@@ -129,9 +136,9 @@
         <input type="number" id="valor-luz" name="valor-luz" min="0" step="0.01" required>
         <label>Monto de agua (S/):</label>
         <input type="number" id="agua" name="agua" min="0" step="0.01" required>
-        <label>¿Hay saldo anterior?</label>
+        <label>otros</label>
         <input type="number" id="saldo" name="saldo" min="0" step="0.01" value="0">
-        <label>Descripción de saldo:</label>
+        <label>Descripción</label>
         <textarea id="descripcion" name="descripcion" rows="2"></textarea>
         <label>Fecha de pago:</label>
         <input type="date" id="fecha" name="fecha" required>
@@ -150,7 +157,7 @@
         // Rellenar los campos fijos
         document.getElementById('departamento').value = depId ? `DEP ${depId}` : '';
         document.getElementById('inquilino').value = inquilino;
-        document.getElementById('mensualidad').value = mensualidad;
+        if (mensualidad) document.getElementById('mensualidad').value = mensualidad;
         document.getElementById('mes').value = mes;
 
         document.getElementById('form-boleta').addEventListener('submit', function(e) {
@@ -169,8 +176,8 @@
             const consumoLuz = Math.max(luzActual - luzAnterior, 0);
             const montoLuz = consumoLuz * valorLuz;
 
-            // Calcular total
-            const montoMensualidad = parseFloat(mensualidad) || 0;
+            // Calcular total usando el valor actual del input mensualidad
+            const montoMensualidad = parseFloat(document.getElementById('mensualidad').value) || 0;
             const total = montoMensualidad + montoLuz + agua + saldo;
 
             // Mostrar boleta
@@ -208,7 +215,7 @@
                             const boletaHTML = boleta.outerHTML;
                             const boletaBase64 = btoa(boletaHTML);
                             setTimeout(() => {
-                                window.location.href = `departamento.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&frecuencia=${encodeURIComponent(frecuencia)}&mes=${encodeURIComponent(mes)}&pagado=1&boleta=${encodeURIComponent(boletaBase64)}`;
+                                window.location.href = `departamento.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(document.getElementById('mensualidad').value)}&inquilino=${encodeURIComponent(inquilino)}&frecuencia=${encodeURIComponent(frecuencia)}&mes=${encodeURIComponent(mes)}&pagado=1&boleta=${encodeURIComponent(boletaBase64)}`;
                             }, 500); // Espera medio segundo para asegurar la descarga
                         });
                     });
@@ -219,5 +226,23 @@
             document.getElementById('boleta-generada').scrollIntoView({behavior: "smooth"});
         });
     </script>
+    <script>
+// Auto-clear para el campo "otros" (saldo)
+document.addEventListener('DOMContentLoaded', function() {
+  const saldoInput = document.getElementById('saldo');
+  if (saldoInput) {
+    saldoInput.addEventListener('focus', function() {
+      if (this.value === '0') {
+        this.value = '';
+      }
+    });
+    saldoInput.addEventListener('blur', function() {
+      if (this.value.trim() === '') {
+        this.value = '0';
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
