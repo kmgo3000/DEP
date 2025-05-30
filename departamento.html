@@ -1,10 +1,10 @@
+<!-- departamento.html corregido -->
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <title>Departamento</title>
-
     <link rel="stylesheet" href="general.css">
     <link rel="stylesheet" href="departamento.css">
     <style>
@@ -17,17 +17,58 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        /* Asegura que la boleta no ocupe espacio si está vacía */
+        #boleta:empty {
+            display: none;
+        }
+        /* Hace que los meses ocupen el alto de la pantalla si la boleta no está visible */
+        #contenedor {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        #meses-cuadro {
+            flex: 1 0 auto;
+        }
+        #boleta {
+            flex: 0 0 auto;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            min-height: 0;
+        }
+        @media (max-width: 700px) {
+            #contenedor {
+                min-height: 100vh;
+                width: 100vw;
+                max-width: 100vw;
+                padding: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            #meses-cuadro {
+                width: 100vw;
+                max-width: 100vw;
+                box-sizing: border-box;
+            }
+            #boleta, #boleta-cuadro {
+                width: 100vw;
+                max-width: 100vw;
+                min-width: 0;
+                box-sizing: border-box;
+                padding: 0 2vw;
+            }
+        }
     </style>
 </head>
 
 <body>
     <!-- Menú de navegación -->
-    <nav
-        style="background: #f3f3f3; padding: 12px 0 12px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 18px;">
-        <a href="index.html" style="text-decoration:none; color:#2196f3; font-weight:600; font-size:1.1em;">
-            🏠 Inicio
-        </a>
-    </nav>
+    <!-- Usa este fragmento en el <body> de departamento.html y generar_boleta.html -->
+<nav>
+    <a href="index.html" class="inicio-btn" aria-label="Ir al inicio">🏠 Inicio</a>
+</nav>
     <div id="contenedor">
         <h2 id="titulo-dep"></h2>
         <div id="datos-dep">
@@ -113,7 +154,7 @@
                 btn.textContent = `${mes} (${pagos[mes]})`;
                 btn.className = 'mes-btn';
                 if (pagos[mes] === "Pagado") {
-                    btn.classList.add('mes-pagado'); // <-- Esto es clave
+                    btn.classList.add('mes-pagado');
                     btn.style.opacity = 1;
                 }
                 btn.addEventListener('click', function () {
@@ -122,16 +163,27 @@
                         const boletaHTML = obtenerBoleta(depId, mes);
                         if (boletaHTML) {
                             document.getElementById('boleta').innerHTML = boletaHTML;
+                            // Scroll suave hacia la boleta
+                            setTimeout(() => {
+                                document.getElementById('boleta').scrollIntoView({behavior: "smooth"});
+                            }, 100);
                         } else {
                             document.getElementById('boleta').innerHTML = `<div id="boleta-cuadro"><p>No se encontró la boleta guardada para este mes.</p></div>`;
+                            setTimeout(() => {
+                                document.getElementById('boleta').scrollIntoView({behavior: "smooth"});
+                            }, 100);
                         }
                     } else {
+                        // Limpiar la boleta si se hace click en un mes no pagado
+                        document.getElementById('boleta').innerHTML = "";
                         // Redirige a generar_boleta.html con los datos necesarios
                         window.location.href = `generar_boleta.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&mes=${encodeURIComponent(mes)}&frecuencia=${encodeURIComponent(frecuencia)}`;
                     }
                 });
                 mesesBotonesDiv.appendChild(btn);
             });
+            // Al cargar, asegúrate de que la boleta esté vacía
+            document.getElementById('boleta').innerHTML = "";
         }
 
         // Marcar mes como pagado y guardar la boleta si viene de generar_boleta.html
@@ -160,9 +212,15 @@
                 marcarMesComoPagado(depId, mesPagado, boletaHTML);
                 // Mostrar la boleta recién guardada
                 document.getElementById('boleta').innerHTML = boletaHTML;
+                mostrarMeses(depId); // Vuelve a mostrar los meses para actualizar el estado visual
+                // Scroll suave hacia la boleta
+                setTimeout(() => {
+                    document.getElementById('boleta').scrollIntoView({behavior: "smooth"});
+                }, 100);
+            } else {
+                 // Si no viene de generar_boleta.html con boleta, solo mostrar los meses
+                 mostrarMeses(depId);
             }
-            // Mostrar los meses
-            mostrarMeses(depId);
 
             // Configurar el botón de reinicio
             document.getElementById('reiniciar-meses').addEventListener('click', function () {
@@ -170,6 +228,7 @@
             });
         }
     </script>
+
 </body>
 
 </html>
