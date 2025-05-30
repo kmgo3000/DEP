@@ -1,67 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Control de Departamentos</title>
     <link rel="stylesheet" href="general.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #2196f3;
+            color: #fff;
+            padding: 24px 0 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        header h1 {
+            margin: 0 0 8px 0;
+            font-size: 2em;
+            letter-spacing: 1px;
+        }
+        header p {
+            margin: 0;
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        nav {
+            background: #f3f3f3;
+            padding: 12px 0 12px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 18px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #2196f3;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 12px 32px 12px;
+        }
+        .contenido {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .pisos-1, .pisos-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .departamento {
+            background: #fff;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 18px 36px;
+            font-size: 1.15em;
+            font-weight: 500;
+            color: #2196f3;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, border 0.18s;
+            outline: none;
+        }
+        .departamento:focus, .departamento:hover {
+            background: #2196f3;
+            color: #fff;
+            border-color: #1769aa;
+        }
+        #info, #info-departamento {
+            margin-bottom: 18px;
+            min-height: 24px;
+        }
+        @media (max-width: 700px) {
+            .contenido {
+                flex-direction: column;
+                gap: 18px;
+                align-items: center;
+            }
+            .pisos-1, .pisos-2 {
+                flex-direction: row;
+                gap: 10px;
+            }
+            .departamento {
+                padding: 12px 10px;
+                font-size: 1em;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <h1>CONTROL DE DEPARTAMENTOS</h1>
-    <div id="info"></div>
-    <!-- CONTENEDOR PRINCIPAL PARA LAS DOS COLUMNAS -->
-    <div class="contenido">
-        <div class="pisos-1">
-            <button class="departamento" data-id="101" data-mensualidad="700" data-inquilino="LAURA  ">
-                <span class="button-content">DEP 101</span>
-            </button>
-            <button class="departamento" data-id="103" data-mensualidad="900" data-inquilino="JULIA">
-                <span class="button-content">DEP 103</span>
-            </button>
-            <button class="departamento" data-id="104" data-mensualidad="850" data-inquilino="HERNAN">
-                <span class="button-content">DEP 104</span>
-            </button>
-            <button class="departamento" data-id="105" data-mensualidad="900" data-inquilino="YOLANDA">
-                <span class="button-content">DEP 105</span>
-            </button>
-            <button class="departamento" data-id="106" data-mensualidad="700" data-inquilino="FREDY">
-                <span class="button-content">DEP 106</span>
-            </button>
-        </div>
-        <div class="pisos-2">
-            <button class="departamento" data-id="202" data-mensualidad="900" data-inquilino="CRISTIAN">
-                <span class="button-content">DEP 202</span>
-            </button>
-            <button class="departamento" data-id="203" data-mensualidad="800" data-inquilino="VANESA">
-                <span class="button-content">DEP 203</span>
-            </button>
-            <button class="departamento" data-id="204" data-mensualidad="900" data-inquilino="EDGAR">
-                <span class="button-content">DEP 204</span>
-            </button>
-            <button class="departamento" data-id="205" data-mensualidad="850" data-inquilino="JAVIER">
-                <span class="button-content">DEP 205</span>
-            </button>
-            <button class="departamento" data-id="206" data-mensualidad="800" data-inquilino="ANTHONY">
-                <span class="button-content">CASA</span>
-            </button>
-        </div>
-    </div>
-
-    <div id="info-departamento"></div>
-    <!-- El script debe ir aquí -->
+    <header>
+        <h1>CONTROL DE DEPARTAMENTOS</h1>
+        <p>Selecciona un departamento para ver detalles o generar una boleta de pago.</p>
+    </header>
+    <nav>
+        <a href="index.html" aria-label="Ir al inicio">🏠 Inicio</a>
+    </nav>
+    <main>
+        <div id="info" aria-live="polite"></div>
+        <!-- CONTENEDOR PRINCIPAL PARA LAS DOS COLUMNAS -->
+        <section class="contenido" aria-label="Listado de departamentos">
+            <div class="pisos-1">
+                <button class="departamento" data-id="101" data-mensualidad="700" data-inquilino="LAURA" aria-label="Departamento 101">
+                    <span class="button-content">DEP 101</span>
+                </button>
+                <button class="departamento" data-id="103" data-mensualidad="900" data-inquilino="JULIA" aria-label="Departamento 103">
+                    <span class="button-content">DEP 103</span>
+                </button>
+                <button class="departamento" data-id="104" data-mensualidad="850" data-inquilino="HERNAN" aria-label="Departamento 104">
+                    <span class="button-content">DEP 104</span>
+                </button>
+                <button class="departamento" data-id="105" data-mensualidad="900" data-inquilino="YOLANDA" aria-label="Departamento 105">
+                    <span class="button-content">DEP 105</span>
+                </button>
+                <button class="departamento" data-id="106" data-mensualidad="700" data-inquilino="FREDY" aria-label="Departamento 106">
+                    <span class="button-content">DEP 106</span>
+                </button>
+            </div>
+            <div class="pisos-2">
+                <button class="departamento" data-id="202" data-mensualidad="900" data-inquilino="CRISTIAN" aria-label="Departamento 202">
+                    <span class="button-content">DEP 202</span>
+                </button>
+                <button class="departamento" data-id="203" data-mensualidad="800" data-inquilino="VANESA" aria-label="Departamento 203">
+                    <span class="button-content">DEP 203</span>
+                </button>
+                <button class="departamento" data-id="204" data-mensualidad="900" data-inquilino="EDGAR" aria-label="Departamento 204">
+                    <span class="button-content">DEP 204</span>
+                </button>
+                <button class="departamento" data-id="205" data-mensualidad="850" data-inquilino="JAVIER" aria-label="Departamento 205">
+                    <span class="button-content">DEP 205</span>
+                </button>
+                <button class="departamento" data-id="206" data-mensualidad="800" data-inquilino="ANTHONY" aria-label="Casa">
+                    <span class="button-content">CASA</span>
+                </button>
+            </div>
+        </section>
+        <div id="info-departamento" aria-live="polite"></div>
+    </main>
     <script>
-document.querySelectorAll('.departamento').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const depId = this.getAttribute('data-id');
-    const mensualidad = this.getAttribute('data-mensualidad');
-    const inquilino = encodeURIComponent(this.getAttribute('data-inquilino'));
-    // Redirige a departamento.html con los datos en la URL
-    window.location.href = `departamento.html?depId=${depId}&mensualidad=${mensualidad}&inquilino=${inquilino}`;
-  });
-});
-</script>
+    // Maneja el click en los botones de departamento
+    document.querySelectorAll('.departamento').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const depId = this.dataset.id;
+            const mensualidad = this.dataset.mensualidad;
+            const inquilino = encodeURIComponent(this.dataset.inquilino.trim());
+            // Redirige a departamento.html con los datos en la URL
+            window.location.href = `departamento.html?depId=${depId}&mensualidad=${mensualidad}&inquilino=${inquilino}`;
+        });
+    });
+    </script>
 </body>
-
 </html>
