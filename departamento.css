@@ -49,7 +49,7 @@ html, body {
     justify-content: flex-start;
     align-items: stretch;
     background: #fff;
-    max-width: 600px;
+    max-width: 1000px;
     margin: 0 auto;
     box-shadow: 0 2px 12px rgba(0,0,0,0.10);
     border-radius: 16px;
@@ -62,7 +62,7 @@ h2 {
     margin-top: 24px;
     color: #2c3e50;
     letter-spacing: 1px;
-    font-size: 2em;
+    font-size: 1.9em;
 }
 
 #datos-dep {
@@ -71,7 +71,7 @@ h2 {
     background: #f0f4f8;
     border-radius: 10px;
     box-shadow: 0 1px 4px rgba(44,62,80,0.04);
-    font-size: 1.1em;
+    font-size: 3.0em;
 }
 
 /* Cuadro de meses */
@@ -85,7 +85,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 60vh;
+   
 }
 
 #meses-cuadro h3 {
@@ -93,40 +93,55 @@ h2 {
     margin: 0 0 18px 0;
     color: #217dbb;
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1.5em;
     letter-spacing: 0.5px;
 }
 
+/* Contenedor principal de los botones de los meses */
 #meses-botones {
     display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    min-height: 40vh;
+    flex-wrap: wrap; /* ¡Importante! Permite que los botones salten a la siguiente línea */
+    gap: 18px;       /* Espacio uniforme entre todos los botones (horizontal y vertical) */
+    justify-content: center; /* Centra los botones horizontalmente en el contenedor */
+    align-items: center; /* Centra los botones verticalmente dentro del contenedor (si hay espacio extra) */
+    width: 100%;     /* Asegura que el contenedor ocupe todo el ancho disponible */
+    min-height: auto; /* Permite que el contenedor se ajuste a la altura de sus botones, evitando espacio extra */
+    /* Si quisieras que el contenedor ocupara toda la altura de la pantalla visible, usarías: */
+    /* height: 100vh; */ /* Pero esto puede causar scroll si hay más contenido en la página */
     margin-bottom: 0;
 }
 
-/* Botón de mes base */
+/* Estilos de cada botón de mes individual */
 .mes-btn {
-    flex: 1 1 160px;
-    min-width: 120px;
-    max-width: 180px;
-    height: 56px;
-    background: #3498db;
-    color: #fff;
+    /* La clave para lograr 4 columnas que se adapten: */
+    flex: 1 1 calc(25% - (18px * 1 / 4));
+    /* Explicación de 'flex':
+       - '1': Permite que el botón crezca si hay espacio extra.
+       - '1': Permite que el botón se encoja si es necesario.
+       - 'calc(25% - (18px * 3 / 4))': Define el tamaño base (flex-basis).
+         '25%' es para tener 4 columnas (100% / 4).
+         Le restamos una porción del 'gap' (18px) para que el cálculo de los navegadores
+         funcione bien y el 'gap' se vea correctamente entre los botones.
+    */
+
+    /* Eliminados: min-width y max-width, ya que causaban conflictos con 'flex' */
+    /* min-width: 400px; */
+    /* max-width: 300px; */
+
+    height: 85px; /* Altura fija para cada botón */
+    background: #77c498;
+    color: #000000;
     border: none;
     border-radius: 14px;
-    font-size: 1.1em;
-    font-weight: 700;
+    font-size: 2em; /* Tamaño de la fuente */
+    font-weight: 600; /* Corregido, un valor numérico válido para el grosor de la fuente */
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    box-shadow: 0 1px 4px rgba(44,62,80,0.06);
-    outline: none;
-    box-sizing: border-box;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+    transition: background 0.2s, transform 0.1s; /* Transiciones para efectos al interactuar */
+    box-shadow: 0 1px 4px rgba(44,62,80,0.06); /* Sombra sutil */
+    outline: none; /* Quita el contorno al hacer clic */
+    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho/alto total */
+    letter-spacing: 1px; /* Espaciado entre letras */
+    margin-bottom: 0; /* No es necesario si ya usas 'gap' en el contenedor padre */
 }
 
 .mes-btn:hover, .mes-btn:focus {
@@ -147,13 +162,13 @@ h2 {
 .mes-btn.mes-pagado:hover,
 .mes-btn.mes-pagado:focus {
     background: #219150 !important;
-    color: #fff !important;
+    color: #000000 !important;
     border: 2px solid #17693a !important;
 }
 
 .mes-btn.mes-pagado::before {
     content: "✔ ";
-    color: #fff;
+    color: #47fb00;
     font-size: 1em;
     margin-right: 0.3em;
     vertical-align: middle;
@@ -169,7 +184,7 @@ h2 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.6em;
     font-weight: bold;
     transition: background 0.2s;
 }
