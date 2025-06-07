@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Departamentos</title>
     <link rel="stylesheet" href="general.css">
+    <style>
+    .editar-general-btn {
+        background: #2196f3;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.6em 1.4em;
+        font-size: 1em;
+        cursor: pointer;
+        margin: 1em auto 2em auto;
+        display: block;
+        transition: background 0.2s;
+    }
+    .editar-general-btn:hover {
+        background: #1769aa;
+    }
+    #modal-editar {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.3);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    #modal-editar .modal-content {
+        background: #fff;
+        padding: 2em;
+        border-radius: 12px;
+        min-width: 320px;
+        max-width: 90vw;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        position: relative;
+    }
+    #modal-editar input, #modal-editar select {
+        width: 100%;
+        margin-bottom: 1em;
+        padding: 0.5em;
+        font-size: 1em;
+    }
+    #modal-editar label {
+        font-weight: bold;
+    }
+    #modal-editar button[type="submit"] {
+        background: #2196f3;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.5em 1.2em;
+        margin-right: 1em;
+        cursor: pointer;
+    }
+    #modal-editar button[type="button"] {
+        background: #eee;
+        border: none;
+        border-radius: 6px;
+        padding: 0.5em 1.2em;
+        cursor: pointer;
+    }
+    </style>
 </head>
 <body>
     <header>
@@ -15,55 +75,171 @@
         <a href="index.html" aria-label="Ir al inicio">🏠 Inicio</a>
     </nav>
     <main>
+        <button class="editar-general-btn" id="abrir-edicion-general">✏️ Editar datos de departamento</button>
         <div id="info" aria-live="polite"></div>
         <!-- DOS COLUMNAS DE 5 FILAS -->
         <section class="contenido" aria-label="Listado de departamentos">
             <div class="columna-deps">
-                <button class="departamento" data-id="101" data-mensualidad="700" data-inquilino="LAURA" aria-label="Departamento 101">
+                <button class="departamento" data-id="101" data-mensualidad="700" data-inquilino="LAURA" data-fechapago="2024-06-10" aria-label="Departamento 101">
                     <span class="button-content">DEP 101</span>
                 </button>
-                <button class="departamento" data-id="103" data-mensualidad="900" data-inquilino="JULIA" aria-label="Departamento 103">
+                <button class="departamento" data-id="103" data-mensualidad="900" data-inquilino="JULIA" data-fechapago="2024-06-10" aria-label="Departamento 103">
                     <span class="button-content">DEP 103</span>
                 </button>
-                <button class="departamento" data-id="104" data-mensualidad="850" data-inquilino="HERNAN" aria-label="Departamento 104">
+                <button class="departamento" data-id="104" data-mensualidad="850" data-inquilino="HERNAN" data-fechapago="2024-06-10" aria-label="Departamento 104">
                     <span class="button-content">DEP 104</span>
                 </button>
-                <button class="departamento" data-id="105" data-mensualidad="900" data-inquilino="YOLANDA" aria-label="Departamento 105">
+                <button class="departamento" data-id="105" data-mensualidad="900" data-inquilino="YOLANDA" data-fechapago="2024-06-10" aria-label="Departamento 105">
                     <span class="button-content">DEP 105</span>
                 </button>
-                <button class="departamento" data-id="106" data-mensualidad="700" data-inquilino="FREDY" aria-label="Departamento 106">
+                <button class="departamento" data-id="106" data-mensualidad="700" data-inquilino="FREDY" data-fechapago="2024-06-10" aria-label="Departamento 106">
                     <span class="button-content">DEP 106</span>
                 </button>
             </div>
             <div class="columna-deps">
-                <button class="departamento" data-id="202" data-mensualidad="900" data-inquilino="CRISTIAN" aria-label="Departamento 202">
+                <button class="departamento" data-id="202" data-mensualidad="900" data-inquilino="CRISTIAN" data-fechapago="2024-06-10" aria-label="Departamento 202">
                     <span class="button-content">DEP 202</span>
                 </button>
-                <button class="departamento" data-id="203" data-mensualidad="800" data-inquilino="VANESA" aria-label="Departamento 203">
+                <button class="departamento" data-id="203" data-mensualidad="800" data-inquilino="VANESA" data-fechapago="2024-06-10" aria-label="Departamento 203">
                     <span class="button-content">DEP 203</span>
                 </button>
-                <button class="departamento" data-id="204" data-mensualidad="900" data-inquilino="EDGAR" aria-label="Departamento 204">
+                <button class="departamento" data-id="204" data-mensualidad="900" data-inquilino="EDGAR" data-fechapago="2024-06-10" aria-label="Departamento 204">
                     <span class="button-content">DEP 204</span>
                 </button>
-                <button class="departamento" data-id="205" data-mensualidad="850" data-inquilino="JAVIER" aria-label="Departamento 205">
+                <button class="departamento" data-id="205" data-mensualidad="850" data-inquilino="JAVIER" data-fechapago="2024-06-10" aria-label="Departamento 205">
                     <span class="button-content">DEP 205</span>
                 </button>
-                <button class="departamento" data-id="206" data-mensualidad="800" data-inquilino="ANTHONY" aria-label="Casa">
+                <button class="departamento" data-id="206" data-mensualidad="800" data-inquilino="ANTHONY" data-fechapago="2024-06-10" aria-label="Casa">
                     <span class="button-content">CASA</span>
                 </button>
             </div>
         </section>
         <div id="info-departamento" aria-live="polite"></div>
     </main>
+
+    <!-- MODAL DE EDICIÓN GENERAL -->
+    <div id="modal-editar">
+      <div class="modal-content">
+        <h2>Editar Departamento</h2>
+        <form id="form-editar-dep">
+          <div>
+            <label for="edit-dep-id">Departamento:</label>
+            <select id="edit-dep-id" required>
+                <option value="">Seleccione...</option>
+                <option value="101">DEP 101</option>
+                <option value="103">DEP 103</option>
+                <option value="104">DEP 104</option>
+                <option value="105">DEP 105</option>
+                <option value="106">DEP 106</option>
+                <option value="202">DEP 202</option>
+                <option value="203">DEP 203</option>
+                <option value="204">DEP 204</option>
+                <option value="205">DEP 205</option>
+                <option value="206">CASA</option>
+            </select>
+          </div>
+          <div>
+            <label for="edit-inquilino">Señor(a):</label>
+            <input type="text" id="edit-inquilino" required>
+          </div>
+          <div>
+            <label for="edit-mensualidad">Mensualidad:</label>
+            <input type="number" id="edit-mensualidad" min="0" required>
+          </div>
+          <div>
+            <label for="edit-fechapago">Fecha de pago:</label>
+            <input type="date" id="edit-fechapago" required>
+          </div>
+          <div style="margin-top:1em;">
+            <button type="submit">Guardar</button>
+            <button type="button" id="cancelar-edicion">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script>
-    // Maneja el click en los botones de departamento
+    // Utilidad: obtener y guardar datos editados en localStorage
+    function getDatosEditados(depId) {
+        const datos = localStorage.getItem('dep_edit_' + depId);
+        return datos ? JSON.parse(datos) : null;
+    }
+    function setDatosEditados(depId, datos) {
+        localStorage.setItem('dep_edit_' + depId, JSON.stringify(datos));
+    }
+
+    // Al cargar, actualiza los botones con los datos editados si existen
+    document.querySelectorAll('.departamento').forEach(btn => {
+        const depId = btn.dataset.id;
+        const editados = getDatosEditados(depId);
+        if (editados) {
+            btn.dataset.inquilino = editados.inquilino;
+            btn.dataset.mensualidad = editados.mensualidad;
+            btn.dataset.fechapago = editados.fechapago;
+            btn.querySelector('.button-content').textContent = depBtnText(depId, editados.inquilino);
+        }
+    });
+
+    // Función para mostrar el texto del botón (DEP o CASA)
+    function depBtnText(depId, inquilino) {
+        if (depId === "206") return `CASA (${inquilino})`;
+        return `DEP ${depId} (${inquilino})`;
+    }
+
+    // Abrir modal de edición general
+    document.getElementById('abrir-edicion-general').onclick = function() {
+        document.getElementById('form-editar-dep').reset();
+        document.getElementById('modal-editar').style.display = 'flex';
+    };
+
+    // Al seleccionar un departamento en el modal, cargar datos actuales
+    document.getElementById('edit-dep-id').addEventListener('change', function() {
+        const depId = this.value;
+        if (!depId) {
+            document.getElementById('edit-inquilino').value = '';
+            document.getElementById('edit-mensualidad').value = '';
+            document.getElementById('edit-fechapago').value = '';
+            return;
+        }
+        const btn = document.querySelector(`.departamento[data-id="${depId}"]`);
+        const editados = getDatosEditados(depId);
+        document.getElementById('edit-inquilino').value = editados ? editados.inquilino : btn.dataset.inquilino;
+        document.getElementById('edit-mensualidad').value = editados ? editados.mensualidad : btn.dataset.mensualidad;
+        document.getElementById('edit-fechapago').value = editados ? editados.fechapago : btn.dataset.fechapago;
+    });
+
+    // Cerrar modal
+    document.getElementById('cancelar-edicion').onclick = function() {
+        document.getElementById('modal-editar').style.display = 'none';
+    };
+
+    // Guardar cambios
+    document.getElementById('form-editar-dep').onsubmit = function(e) {
+        e.preventDefault();
+        const depId = document.getElementById('edit-dep-id').value;
+        const inquilino = document.getElementById('edit-inquilino').value.trim();
+        const mensualidad = document.getElementById('edit-mensualidad').value;
+        const fechapago = document.getElementById('edit-fechapago').value;
+        setDatosEditados(depId, { inquilino, mensualidad, fechapago });
+        // Actualiza el botón
+        const depBtn = document.querySelector(`.departamento[data-id="${depId}"]`);
+        depBtn.dataset.inquilino = inquilino;
+        depBtn.dataset.mensualidad = mensualidad;
+        depBtn.dataset.fechapago = fechapago;
+        depBtn.querySelector('.button-content').textContent = depBtnText(depId, inquilino);
+        document.getElementById('modal-editar').style.display = 'none';
+    };
+
+    // Al hacer click en un departamento, usa los datos editados si existen
     document.querySelectorAll('.departamento').forEach(btn => {
         btn.addEventListener('click', function() {
             const depId = this.dataset.id;
-            const mensualidad = this.dataset.mensualidad;
-            const inquilino = encodeURIComponent(this.dataset.inquilino.trim());
+            const editados = getDatosEditados(depId);
+            const mensualidad = editados ? editados.mensualidad : this.dataset.mensualidad;
+            const inquilino = encodeURIComponent(editados ? editados.inquilino : this.dataset.inquilino.trim());
+            const fechapago = encodeURIComponent(editados ? editados.fechapago : this.dataset.fechapago);
             // Redirige a departamento.html con los datos en la URL
-            window.location.href = `departamento.html?depId=${depId}&mensualidad=${mensualidad}&inquilino=${inquilino}`;
+            window.location.href = `departamento.html?depId=${depId}&mensualidad=${mensualidad}&inquilino=${inquilino}&fechapago=${fechapago}`;
         });
     });
     </script>
