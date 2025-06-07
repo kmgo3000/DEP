@@ -43,104 +43,118 @@
         <button type="submit">Generar Boleta</button>
     </form>
     <div id="boleta-generada"></div>
-    <script>
-        // Obtener parámetros de la URL
-        const params = new URLSearchParams(window.location.search);
-        const depId = params.get('depId');
-        const mensualidad = params.get('mensualidad');
-        const inquilino = decodeURIComponent(params.get('inquilino') || '');
-        const mes = decodeURIComponent(params.get('mes') || '');
-        const frecuencia = decodeURIComponent(params.get('frecuencia') || 'Mensual');
+   <script>
+    // Obtener parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const depId = params.get('depId');
+    const mensualidad = params.get('mensualidad');
+    const inquilino = decodeURIComponent(params.get('inquilino') || '');
+    const mes = decodeURIComponent(params.get('mes') || '');
+    const frecuencia = decodeURIComponent(params.get('frecuencia') || 'Mensual');
 
-        // Rellenar los campos fijos
-        document.getElementById('departamento').value = depId ? `DEP ${depId}` : '';
-        document.getElementById('inquilino').value = inquilino;
-        if (mensualidad) document.getElementById('mensualidad').value = mensualidad;
-        document.getElementById('mes').value = mes;
+    // Rellenar los campos fijos
+    document.getElementById('departamento').value = depId ? `DEP ${depId}` : '';
+    document.getElementById('inquilino').value = inquilino;
+    if (mensualidad) document.getElementById('mensualidad').value = mensualidad;
+    document.getElementById('mes').value = mes;
 
-        document.getElementById('form-boleta').addEventListener('submit', function(e) {
-            e.preventDefault();
+    // --- NUEVO: Autocompletar lectura anterior con la lectura actual del mes anterior ---
+    function obtenerMesAnterior(mesActual) {
+        const meses = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+        const idx = meses.findIndex(m => m.toLowerCase() === mesActual.toLowerCase());
+        if (idx > 0) {
+            return meses[idx - 1];
+        }
+        return null;
+    }
 
-            // Obtener valores del formulario
-            const luzAnterior = parseFloat(document.getElementById('luz-anterior').value) || 0;
-            const luzActual = parseFloat(document.getElementById('luz-actual').value) || 0;
-            const valorLuz = parseFloat(document.getElementById('valor-luz').value) || 0;
-            const agua = parseFloat(document.getElementById('agua').value) || 0;
-            const saldo = parseFloat(document.getElementById('saldo').value) || 0;
-            const descripcion = document.getElementById('descripcion').value;
-            const fecha = document.getElementById('fecha').value;
+    if (mes) {
+        const mesAnterior = obtenerMesAnterior(mes);
+        if (mesAnterior) {
+            const lecturaAnteriorGuardada = localStorage.getItem(`lectura_actual_DEP${depId}_${mesAnterior}`);
+            if (lecturaAnteriorGuardada !== null) {
+                document.getElementById('luz-anterior').value = lecturaAnteriorGuardada;
+            }
+        }
+    }
+    // --- FIN NUEVO ---
 
-            // Calcular consumo de luz
-            const consumoLuz = Math.max(luzActual - luzAnterior, 0);
-            const montoLuz = consumoLuz * valorLuz;
+    document.getElementById('form-boleta').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            // Calcular total usando el valor actual del input mensualidad
-            const montoMensualidad = parseFloat(document.getElementById('mensualidad').value) || 0;
-            const total = montoMensualidad + montoLuz + agua + saldo;
+        // Obtener valores del formulario
+        const luzAnterior = parseFloat(document.getElementById('luz-anterior').value) || 0;
+        const luzActual = parseFloat(document.getElementById('luz-actual').value) || 0;
+        const valorLuz = parseFloat(document.getElementById('valor-luz').value) || 0;
+        const agua = parseFloat(document.getElementById('agua').value) || 0;
+        const saldo = parseFloat(document.getElementById('saldo').value) || 0;
+        const descripcion = document.getElementById('descripcion').value;
+        const fecha = document.getElementById('fecha').value;
 
-            // Mostrar boleta
-            document.getElementById('boleta-generada').innerHTML = `
-                <div id="boleta-cuadro">
-                    <h3>Recibo</h3>
-                    <p><strong>Departamento:</strong> DEP ${depId}</p>
-                    <p><strong>Inquilino:</strong> ${inquilino}</p>
-                    <p><strong>Mes:</strong> ${mes}</p>
-                    <p><strong>Mensualidad:</strong> S/ ${montoMensualidad.toFixed(2)}</p>
-                    <p><strong>Consumo de luz:</strong> ${consumoLuz} kWh x S/ ${valorLuz.toFixed(2)} = <strong>S/ ${montoLuz.toFixed(2)}</strong></p>
-                    <p><strong>Monto de agua:</strong> S/ ${agua.toFixed(2)}</p>
-                    <p><strong>Saldo anterior:</strong> S/ ${saldo.toFixed(2)}</p>
-                    <p><strong>Descripción:</strong> ${descripcion ? descripcion : '-'}</p>
-                    <p><strong>Fecha de pago:</strong> ${fecha}</p>
-                    <hr>
-                    <p style="font-size:1.2em;"><strong>TOTAL A PAGAR: S/ ${total.toFixed(2)}</strong></p>
-                    <button id="descargar-boleta">Descargar Boleta</button>
-                </div>
-            `;
+        // Calcular consumo de luz
+        const consumoLuz = Math.max(luzActual - luzAnterior, 0);
+        const montoLuz = consumoLuz * valorLuz;
 
-            // Espera a que el botón esté en el DOM y agrega el evento para descargar la boleta como imagen y redirigir
-            setTimeout(() => {
-                const btnDescargar = document.getElementById('descargar-boleta');
-                if (btnDescargar) {
-                    btnDescargar.addEventListener('click', function() {
-                        const boleta = document.getElementById('boleta-cuadro');
-                        html2canvas(boleta).then(canvas => {
-                            // Descargar imagen
-                            const link = document.createElement('a');
-                            link.download = `boleta_${depId}_${fecha}.png`;
-                            link.href = canvas.toDataURL();
-                            link.click();
-                            // Codificar la boleta en base64 y redirigir a departamento.html
-                            const boletaHTML = boleta.outerHTML;
-                            const boletaBase64 = btoa(boletaHTML);
-                            setTimeout(() => {
-                                window.location.href = `departamento.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(document.getElementById('mensualidad').value)}&inquilino=${encodeURIComponent(inquilino)}&frecuencia=${encodeURIComponent(frecuencia)}&mes=${encodeURIComponent(mes)}&pagado=1&boleta=${encodeURIComponent(boletaBase64)}`;
-                            }, 500); // Espera medio segundo para asegurar la descarga
-                        });
+        // Calcular total usando el valor actual del input mensualidad
+        const montoMensualidad = parseFloat(document.getElementById('mensualidad').value) || 0;
+        const total = montoMensualidad + montoLuz + agua + saldo;
+
+        // --- NUEVO: Guardar la lectura actual de este mes ---
+        if (mes) {
+            localStorage.setItem(`lectura_actual_DEP${depId}_${mes}`, luzActual);
+        }
+        // --- FIN NUEVO ---
+
+        // Mostrar boleta (ahora incluye lectura anterior y actual)
+        document.getElementById('boleta-generada').innerHTML = `
+            <div id="boleta-cuadro">
+                <h3>Recibo</h3>
+                <p><strong>Departamento:</strong> DEP ${depId}</p>
+                <p><strong>Inquilino:</strong> ${inquilino}</p>
+                <p><strong>Mes:</strong> ${mes}</p>
+                <p><strong>Mensualidad:</strong> S/ ${montoMensualidad.toFixed(2)}</p>
+                <p><strong>Lectura anterior:</strong> ${luzAnterior} kWh</p>
+                <p><strong>Lectura actual:</strong> ${luzActual} kWh</p>
+                <p><strong>Consumo de luz:</strong> ${consumoLuz} kWh x S/ ${valorLuz.toFixed(2)} = <strong>S/ ${montoLuz.toFixed(2)}</strong></p>
+                <p><strong>Monto de agua:</strong> S/ ${agua.toFixed(2)}</p>
+                <p><strong>Saldo anterior:</strong> S/ ${saldo.toFixed(2)}</p>
+                <p><strong>Descripción:</strong> ${descripcion ? descripcion : '-'}</p>
+                <p><strong>Fecha de pago:</strong> ${fecha}</p>
+                <hr>
+                <p style="font-size:1.2em;"><strong>TOTAL A PAGAR: S/ ${total.toFixed(2)}</strong></p>
+                <button id="descargar-boleta">Descargar Boleta</button>
+            </div>
+        `;
+
+        // Espera a que el botón esté en el DOM y agrega el evento para descargar la boleta como imagen y redirigir
+        setTimeout(() => {
+            const btnDescargar = document.getElementById('descargar-boleta');
+            if (btnDescargar) {
+                btnDescargar.addEventListener('click', function() {
+                    const boleta = document.getElementById('boleta-cuadro');
+                    html2canvas(boleta).then(canvas => {
+                        // Descargar imagen
+                        const link = document.createElement('a');
+                        link.download = `boleta_${depId}_${fecha}.png`;
+                        link.href = canvas.toDataURL();
+                        link.click();
+                        // Codificar la boleta en base64 y redirigir a departamento.html
+                        const boletaHTML = boleta.outerHTML;
+                        const boletaBase64 = btoa(boletaHTML);
+                        setTimeout(() => {
+                            window.location.href = `departamento.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(document.getElementById('mensualidad').value)}&inquilino=${encodeURIComponent(inquilino)}&frecuencia=${encodeURIComponent(frecuencia)}&mes=${encodeURIComponent(mes)}&pagado=1&boleta=${encodeURIComponent(boletaBase64)}`;
+                        }, 500); // Espera medio segundo para asegurar la descarga
                     });
-                }
-            }, 100);
+                });
+            }
+        }, 100);
 
-            // Opcional: hacer scroll a la boleta
-            document.getElementById('boleta-generada').scrollIntoView({behavior: "smooth"});
-        });
-    </script>
-    <script>
-// Auto-clear para el campo "otros" (saldo)
-document.addEventListener('DOMContentLoaded', function() {
-  const saldoInput = document.getElementById('saldo');
-  if (saldoInput) {
-    saldoInput.addEventListener('focus', function() {
-      if (this.value === '0') {
-        this.value = '';
-      }
+        // Opcional: hacer scroll a la boleta
+        document.getElementById('boleta-generada').scrollIntoView({behavior: "smooth"});
     });
-    saldoInput.addEventListener('blur', function() {
-      if (this.value.trim() === '') {
-        this.value = '0';
-      }
-    });
-  }
-});
 </script>
 </body>
 </html>
