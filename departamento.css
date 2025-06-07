@@ -176,7 +176,7 @@ h2 {
 }
 
 /* Botón de reinicio */
-.reiniciar-btn {
+.reiniciar-btn, .reiniciarmes-btn {
     margin: 20px 0;
     padding: 10px 20px;
     background: #f44336;
@@ -188,7 +188,7 @@ h2 {
     font-weight: bold;
     transition: background 0.2s;
 }
-.reiniciar-btn:hover {
+.reiniciar-btn:hover,.reiniciarmes-btn {
     background: #c62828;
 }
 
@@ -322,4 +322,31 @@ h2 {
         margin-top: 0;
         padding: 0;
     }
+
+
+}
+#selector-corregir-mes {
+    font-size: 1em;              /* Tamaño de texto legible */
+    padding: 12px 24px;          /* Cuadro más grande y cómodo */
+    border-radius: 8px;
+    border: 2px solid #2196f3;
+    background: #e3f2fd;
+    color: #222;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    min-width: 260px;            /* Aumentado el ancho mínimo */
+    height: 50px;                /* Agregado para hacer más alto el cuadro */
+    box-shadow: 0 2px 8px rgba(33,150,243,0.10);
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+#selector-corregir-mes:focus {
+    border: 2px solid #1976d2;
+    box-shadow: 0 0 0 3px rgba(33,150,243,0.13);
+}
+
+#selector-corregir-mes option {
+    font-size: 1em; /* Asegura que las opciones no se vean muy pequeñas ni muy grandes */
+    padding: 10px;  /* Espaciado interno en las opciones del desplegable */
 }
