@@ -65,10 +65,9 @@
 
 <body>
     <!-- Menú de navegación -->
-    <!-- Usa este fragmento en el <body> de departamento.html y generar_boleta.html -->
-<nav>
-    <a href="index.html" class="inicio-btn" aria-label="Ir al inicio">🏠 Inicio</a>
-</nav>
+    <nav>
+        <a href="index.html" class="inicio-btn" aria-label="Ir al inicio">🏠 Inicio</a>
+    </nav>
     <div id="contenedor">
         <h2 id="titulo-dep"></h2>
         <div id="datos-dep">
@@ -82,6 +81,7 @@
                 <!-- Los botones de los meses se generan dinámicamente -->
             </div>
             <button id="reiniciar-meses" class="reiniciar-btn">Reiniciar todos los meses</button>
+            <button id="corregir-mes" class="reiniciarmes-btn">corregir mes</button>
         </div>
         <div id="boleta"></div>
     </div>
@@ -92,7 +92,8 @@
         const depId = params.get('depId');
         const mensualidad = params.get('mensualidad');
         const inquilino = decodeURIComponent(params.get('inquilino') || '');
-        const frecuencia = decodeURIComponent(params.get('frecuencia') || 'Mensual');
+        // Cambia aquí: obtenemos fechapago en vez de frecuencia
+        const fechapago = params.get('fechapago'); // formato YYYY-MM-DD
 
         // Lista de meses
         const meses = [
@@ -177,7 +178,7 @@
                         // Limpiar la boleta si se hace click en un mes no pagado
                         document.getElementById('boleta').innerHTML = "";
                         // Redirige a generar_boleta.html con los datos necesarios
-                        window.location.href = `generar_boleta.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&mes=${encodeURIComponent(mes)}&frecuencia=${encodeURIComponent(frecuencia)}`;
+                        window.location.href = `generar_boleta.html?depId=${encodeURIComponent(depId)}&mensualidad=${encodeURIComponent(mensualidad)}&inquilino=${encodeURIComponent(inquilino)}&mes=${encodeURIComponent(mes)}&fechapago=${encodeURIComponent(fechapago)}`;
                     }
                 });
                 mesesBotonesDiv.appendChild(btn);
@@ -202,7 +203,15 @@
             document.getElementById('titulo-dep').textContent = `Departamento ${depId}`;
             document.getElementById('inquilino').textContent = inquilino;
             document.getElementById('mensualidad').textContent = mensualidad;
-            document.getElementById('frecuencia').textContent = frecuencia;
+
+            // Mostrar la frecuencia de pago como "Paga el 10 de cada mes"
+            if (fechapago) {
+                const fechaObj = new Date(fechapago);
+                const dia = fechaObj.getDate();
+                document.getElementById('frecuencia').textContent = `Paga el ${dia} de cada mes`;
+            } else {
+                document.getElementById('frecuencia').textContent = 'No definido';
+            }
 
             // Si viene de generar_boleta.html con boleta generada, guardar el estado y la boleta
             if (params.get('pagado') === '1' && params.get('mes') && params.get('boleta')) {
@@ -226,6 +235,63 @@
             document.getElementById('reiniciar-meses').addEventListener('click', function () {
                 reiniciarMeses(depId);
             });
+            // --- INICIO: Funcionalidad para corregir solo un mes ---
+            // Crear el selector de meses solo una vez y agregarlo al DOM
+            let selectorCorregirMes = document.createElement('select');
+            selectorCorregirMes.id = 'selector-corregir-mes';
+            selectorCorregirMes.style.display = 'none';
+            selectorCorregirMes.style.marginTop = '10px';
+
+            // Opción por defecto
+            let opcionDefault = document.createElement('option');
+            opcionDefault.value = '';
+            opcionDefault.textContent = '-- Selecciona un mes --';
+            selectorCorregirMes.appendChild(opcionDefault);
+
+            // Agregar los meses como opciones
+            meses.forEach(mes => {
+                let opt = document.createElement('option');
+                opt.value = mes;
+                opt.textContent = mes;
+                selectorCorregirMes.appendChild(opt);
+            });
+
+            // Insertar el selector justo después del botón "corregir mes"
+            document.addEventListener('DOMContentLoaded', function() {
+                const btnCorregirMes = document.getElementById('corregir-mes');
+                if (btnCorregirMes) {
+                    btnCorregirMes.parentNode.insertBefore(selectorCorregirMes, btnCorregirMes.nextSibling);
+
+                    btnCorregirMes.addEventListener('click', function () {
+                        // Mostrar u ocultar el selector
+                        selectorCorregirMes.style.display = selectorCorregirMes.style.display === 'none' ? 'inline-block' : 'none';
+                        selectorCorregirMes.value = '';
+                    });
+                }
+            });
+
+            // Lógica al seleccionar un mes para corregir
+            selectorCorregirMes.addEventListener('change', function () {
+                const mesSeleccionado = this.value;
+                if (!mesSeleccionado) return;
+                if (confirm(`¿Seguro que quieres reiniciar el mes "${mesSeleccionado}" a "Pendiente"?`)) {
+                    // Obtener y actualizar solo el mes seleccionado
+                    const pagos = getPagos(depId);
+                    pagos[mesSeleccionado] = "Pendiente";
+                    setPagos(depId, pagos);
+
+                    // Borrar la boleta de ese mes
+                    const key = `boleta_DEP${depId}_${mesSeleccionado}`;
+                    localStorage.removeItem(key);
+
+                    // Actualizar la interfaz
+                    mostrarMeses(depId);
+                    document.getElementById('boleta').innerHTML = "";
+                    this.style.display = 'none';
+                    this.value = "";
+                }
+            });
+            // --- FIN: Funcionalidad para corregir solo un mes ---
         }
     </script>
 
